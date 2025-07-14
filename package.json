@@ -3,25 +3,50 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
+    "dev:turbo": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "format": "npx prettier --write .",
+    "format:check": "npx prettier --check .",
+    "lint": "npx eslint .",
+    "lint:fix": "npx eslint . --fix",
+    "typecheck": "npx tsc --noEmit",
+    "quality": "npm run format && npm run lint:fix && npm run typecheck",
+    "quality:check": "npm run format:check && npm run lint && npm run typecheck",
+    "prepare": "husky"
   },
   "dependencies": {
+    "next": "15.3.5",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.5"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3.3.1",
+    "@next/eslint-plugin-next": "^15.3.5",
+    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
+    "eslint-config-next": "^15.3.5",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-prettier": "^5.5.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-security": "^3.0.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-sonarjs": "^3.0.4",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.5",
-    "@eslint/eslintrc": "^3"
+    "typescript": "^5"
   }
 }
