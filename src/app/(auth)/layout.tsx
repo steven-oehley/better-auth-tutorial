@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { LucideArrowLeft } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/sonner';
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -17,6 +18,12 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         </Link>
       </Button>
       {children}
+      <Toaster
+        closeButton
+        richColors
+        className='border-2 border-white bg-black text-white' // or "light"
+        position='bottom-right'
+      />
     </div>
   );
 };
