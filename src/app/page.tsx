@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 
-const HomePage = () => {
+const HomePage = async () => {
   return (
     <div className='flex min-h-screen flex-col items-center justify-center gap-8 bg-gray-300'>
       <div className='flex justify-center gap-4'>

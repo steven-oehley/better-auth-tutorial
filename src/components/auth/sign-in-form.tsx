@@ -1,16 +1,38 @@
+'use client';
+
+import { useActionState, useEffect } from 'react';
 import Form from 'next/form';
 import Link from 'next/link';
 
 import { LucideCode2 } from 'lucide-react';
+import { toast } from 'sonner';
 
+import { signInAction, type SignInState } from '@/actions/auth/sign-in-action';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+const initialFormState: SignInState = {
+  errorMessage: '',
+};
+
 const SignInForm = () => {
+  const [state, formAction, pending] = useActionState(
+    signInAction,
+    initialFormState,
+  );
+
+  useEffect(() => {
+    if (state.errorMessage) {
+      toast.error('Error occured during sign up.', {
+        description: state.errorMessage,
+      });
+    }
+  }, [state.errorMessage]);
+
   return (
     <Form
-      action=''
+      action={formAction}
       className='bg-card text-card-foreground border-border m-auto h-fit w-full max-w-sm rounded-lg border p-0.5 shadow-md'
     >
       <div className='p-8 pb-6'>
@@ -106,7 +128,9 @@ const SignInForm = () => {
             <Input required id='pwd' name='pwd' type='password' />
           </div>
 
-          <Button className='w-full'>Sign In</Button>
+          <Button className='w-full' disabled={pending}>
+            Sign In
+          </Button>
         </div>
       </div>
 
