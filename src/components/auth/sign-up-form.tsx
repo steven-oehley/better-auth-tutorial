@@ -13,6 +13,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { type ActionState } from '@/types/types';
 
+import SignInSocial from './sign-in-social';
+
 const initialFormState: ActionState = {
   errorMessage: '',
 };
@@ -49,7 +51,7 @@ const SignUpForm = () => {
 
         {/* Social buttons at top (like login) */}
         <div className='mt-6 grid grid-cols-2 gap-3'>
-          <Button className='cursor-pointer' type='button' variant='outline'>
+          <SignInSocial callbackURL='/dashboard' provider='google'>
             <svg
               height='1em'
               viewBox='0 0 256 262'
@@ -74,8 +76,8 @@ const SignUpForm = () => {
               />
             </svg>
             <span>Google</span>
-          </Button>
-          <Button className='cursor-pointer' type='button' variant='outline'>
+          </SignInSocial>
+          <SignInSocial callbackURL='/dashboard' provider='github'>
             {/* GitHub icon instead of Microsoft for consistency */}
             <svg
               height='1em'
@@ -91,7 +93,7 @@ const SignUpForm = () => {
               />
             </svg>
             <span>GitHub</span>
-          </Button>
+          </SignInSocial>
         </div>
 
         <hr className='my-4 border-dashed' />

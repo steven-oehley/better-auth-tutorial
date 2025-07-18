@@ -13,6 +13,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { type ActionState } from '@/types/types';
 
+import SignInSocial from './sign-in-social';
+
 const initialFormState: ActionState = {
   errorMessage: '',
 };
@@ -62,9 +64,8 @@ const SignInForm = ({ resetSuccess }: SignInFormProps) => {
         </div>
 
         <div className='mt-6 grid grid-cols-2 gap-3'>
-          <Button className='w-full' type='button' variant='outline'>
+          <SignInSocial callbackURL='/dashboard' provider='google'>
             <svg
-              className='mr-2'
               height='1em'
               viewBox='0 0 256 262'
               width='0.98em'
@@ -88,10 +89,10 @@ const SignInForm = ({ resetSuccess }: SignInFormProps) => {
               />
             </svg>
             <span>Google</span>
-          </Button>
-          <Button className='w-full' type='button' variant='outline'>
+          </SignInSocial>
+          <SignInSocial callbackURL='/dashboard' provider='github'>
+            {/* GitHub icon instead of Microsoft for consistency */}
             <svg
-              className='mr-2'
               height='1em'
               viewBox='0 0 98 96'
               width='1em'
@@ -105,7 +106,7 @@ const SignInForm = ({ resetSuccess }: SignInFormProps) => {
               />
             </svg>
             <span>GitHub</span>
-          </Button>
+          </SignInSocial>
         </div>
 
         <div className='relative my-4'>
