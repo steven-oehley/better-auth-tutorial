@@ -7,16 +7,21 @@ import Link from 'next/link';
 import { LucideCode2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { signInAction, type SignInState } from '@/actions/auth/sign-in-action';
+import { signInAction } from '@/actions/auth/sign-in-action';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { type ActionState } from '@/types/types';
 
-const initialFormState: SignInState = {
+const initialFormState: ActionState = {
   errorMessage: '',
 };
 
-const SignInForm = () => {
+interface SignInFormProps {
+  resetSuccess?: boolean;
+}
+
+const SignInForm = ({ resetSuccess }: SignInFormProps) => {
   const [state, formAction, pending] = useActionState(
     signInAction,
     initialFormState,
@@ -29,6 +34,14 @@ const SignInForm = () => {
       });
     }
   }, [state.errorMessage]);
+
+  useEffect(() => {
+    if (resetSuccess) {
+      toast.success('Password reset successful!', {
+        description: 'You can now sign in with your new password.',
+      });
+    }
+  }, [resetSuccess]);
 
   return (
     <Form

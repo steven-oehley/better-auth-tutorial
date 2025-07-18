@@ -21,7 +21,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       <Toaster
         closeButton
         richColors
-        className='border-2 border-white bg-black text-white' // or "light"
+        className='border-2 border-white bg-black text-white'
         position='bottom-right'
       />
     </div>

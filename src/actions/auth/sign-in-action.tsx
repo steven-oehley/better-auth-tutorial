@@ -7,19 +7,12 @@ import z from 'zod';
 
 import { auth } from '@/lib/auth';
 import { signInSchema } from '@/schemas/sign-in-schema';
-
-export interface SignInState {
-  errorMessage?: string;
-  fieldErrors?: {
-    email?: string[];
-    pwd?: string[];
-  };
-}
+import { type ActionState } from '@/types/types';
 
 export const signInAction = async (
-  prevState: SignInState,
+  prevState: ActionState,
   formData: FormData,
-): Promise<SignInState> => {
+): Promise<ActionState> => {
   const rawData = {
     email: formData.get('email')?.toString() ?? '',
     pwd: formData.get('pwd')?.toString() ?? '',

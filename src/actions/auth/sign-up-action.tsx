@@ -7,29 +7,12 @@ import z from 'zod';
 
 import { auth } from '@/lib/auth';
 import { signUpSchema } from '@/schemas/sign-up-schema';
-
-interface PreservedData {
-  email: string;
-  firstname: string;
-  lastname: string;
-}
-
-export interface SignUpState {
-  errorMessage?: string;
-  fieldErrors?: {
-    firstname?: string[];
-    lastname?: string[];
-    email?: string[];
-    pwd?: string[];
-    pwdConfirm?: string[];
-  };
-  preservedData?: PreservedData;
-}
+import { type ActionState } from '@/types/types';
 
 export const signUpAction = async (
-  prevState: SignUpState,
+  prevState: ActionState,
   formData: FormData,
-): Promise<SignUpState> => {
+): Promise<ActionState> => {
   const rawData = {
     email: formData.get('email')?.toString() ?? '',
     firstname: formData.get('firstname')?.toString() ?? '',

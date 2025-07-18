@@ -7,12 +7,13 @@ import Link from 'next/link';
 import { LucideCodeSquare } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { signUpAction, type SignUpState } from '@/actions/auth/sign-up-action';
+import { signUpAction } from '@/actions/auth/sign-up-action';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { type ActionState } from '@/types/types';
 
-const initialFormState: SignUpState = {
+const initialFormState: ActionState = {
   errorMessage: '',
 };
 
