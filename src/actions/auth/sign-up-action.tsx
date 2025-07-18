@@ -49,9 +49,10 @@ export const signUpAction = async (
   try {
     await auth.api.signUpEmail({
       body: {
+        callbackURL: '/dashboard',
         email,
         name: `${firstname} ${lastname}`,
-        password: pwd,
+        password: pwd, // Optional, where to redirect after sign up
       },
     });
   } catch (error) {
@@ -82,5 +83,5 @@ export const signUpAction = async (
     };
   }
 
-  redirect('/dashboard');
+  redirect('/sign-up-success');
 };

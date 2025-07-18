@@ -49,6 +49,12 @@ export const signInAction = async (
             errorMessage:
               'Invalid credentials. Please check your email and password.',
           };
+        case 'FORBIDDEN':
+          // This is the email verification error (status 403)
+          return {
+            errorMessage:
+              'Please verify your email address before signing in. Check your inbox for the verification link.',
+          };
         case 'BAD_REQUEST':
           return {
             errorMessage: 'Invalid input, please check your details.',

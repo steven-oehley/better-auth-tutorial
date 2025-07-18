@@ -4,6 +4,7 @@ import { nextCookies } from 'better-auth/next-js';
 import { Resend } from 'resend';
 
 import PasswordResetEmail from '@/components/emails/forgot-password-email';
+import VerifyEmailTemplate from '@/components/emails/verify-email-email';
 import { PrismaClient } from '@/generated/prisma';
 
 const resend = new Resend(process.env.RESEND_API_KEY as string);
@@ -20,10 +21,11 @@ export const auth = betterAuth({
     provider: 'sqlite', // or "mysql", "postgresql", ...etc
   }),
   emailAndPassword: {
-    autoSignIn: true,
+    autoSignIn: false,
     enabled: true,
     maxPasswordLength: 64,
     minPasswordLength: 8,
+    requireEmailVerification: true,
     sendResetPassword: async ({ user, url }) => {
       await resend.emails.send({
         from: 'info@stevedoes.tech',
@@ -36,6 +38,23 @@ export const auth = betterAuth({
         to: user.email,
       });
     },
+  },
+  emailVerification: {
+    autoSignInAfterVerification: true,
+    callbackUrl: '/dashboard',
+    sendVerificationEmail: async ({ user, url }) => {
+      await resend.emails.send({
+        from: 'noreply@stevedoes.tech',
+        react: VerifyEmailTemplate({
+          userEmail: user.email,
+          userName: user.name,
+          verificationUrl: url,
+        }),
+        subject: 'Verify your email address',
+        to: user.email,
+      });
+    },
+    verificationTokenExpiresIn: 60 * 60 * 48,
   },
   plugins: [nextCookies()],
   socialProviders: {
