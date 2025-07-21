@@ -1,6 +1,8 @@
 import { headers } from 'next/headers';
 import Link from 'next/link';
 
+import CheckoutBtn from '@/components/checkout/checkout-btn';
+import { POLAR_PRODUCT_IDS } from '@/components/checkout/constants';
 import { Button } from '@/components/ui/button';
 import { auth } from '@/lib/auth';
 
@@ -18,6 +20,16 @@ const HomePage = async () => {
         <Button asChild variant='secondary'>
           <Link href='/login'>Sign In</Link>
         </Button>
+      </div>
+      <div className='flex justify-center gap-4'>
+        <CheckoutBtn
+          label='Subscribe to Better Build - Annual'
+          productSlug={POLAR_PRODUCT_IDS.annual.slug}
+        />
+        <CheckoutBtn
+          label='Subscribe to Better Build - Monthly'
+          productSlug={POLAR_PRODUCT_IDS.monthly.slug}
+        />
       </div>
     </div>
   );
