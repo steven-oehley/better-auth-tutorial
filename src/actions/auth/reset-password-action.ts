@@ -3,7 +3,6 @@
 import { redirect } from 'next/navigation';
 
 import { APIError } from 'better-auth/api';
-import z from 'zod';
 
 import { auth } from '@/lib/auth';
 import { resetPasswordSchema } from '@/schemas/reset-password-schema';
@@ -23,12 +22,12 @@ export const resetPasswordAction = async (
   const validatedFields = resetPasswordSchema.safeParse(rawData);
 
   if (!validatedFields.success) {
-    const treeifiedErrors = z.treeifyError(validatedFields.error);
+    const fieldErrors = validatedFields.error.flatten().fieldErrors;
 
     return {
       fieldErrors: {
-        pwd: treeifiedErrors.properties?.pwd?.errors,
-        pwdConfirm: treeifiedErrors.properties?.pwdConfirm?.errors,
+        pwd: fieldErrors.pwd,
+        pwdConfirm: fieldErrors.pwdConfirm,
       },
     };
   }

@@ -56,7 +56,7 @@ export const auth = betterAuth({
   },
   emailVerification: {
     autoSignInAfterVerification: true,
-    callbackUrl: '/dashboard',
+    callbackUrl: '/subscribe',
     sendVerificationEmail: async ({ user, url }) => {
       await resend.emails.send({
         from: 'noreply@stevedoes.tech',

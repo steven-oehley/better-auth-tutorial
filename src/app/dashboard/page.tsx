@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import {
   ArrowUpRight,
@@ -42,14 +43,22 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { auth } from '@/lib/auth';
+import { hasActiveSubscription } from '@/lib/subscription/queries';
 
 export default async function Page() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
+  const hasActiveSub = await hasActiveSubscription();
+  console.warn('Has active subscription:', hasActiveSub);
+
   if (!session) {
     return <div>Not authenticated</div>;
+  }
+
+  if (!hasActiveSub) {
+    redirect('/subscribe');
   }
 
   return (

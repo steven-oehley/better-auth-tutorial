@@ -1,9 +1,10 @@
+/* eslint-disable security/detect-object-injection */
 'use server';
 
 import { redirect } from 'next/navigation';
 
 import { APIError } from 'better-auth/api';
-import z from 'zod';
+import type z from 'zod';
 
 import { auth } from '@/lib/auth';
 import { signUpSchema } from '@/schemas/sign-up-schema';
@@ -29,16 +30,39 @@ export const signUpAction = async (
 
   const validatedFields = signUpSchema.safeParse(rawData);
 
+  function mapFieldErrors(
+    errors: z.ZodIssue[],
+  ): Record<string, string[] | undefined> {
+    const fieldErrors: Record<string, string[] | undefined> = {};
+    const allowedFields = [
+      'email',
+      'firstname',
+      'lastname',
+      'pwd',
+      'pwdConfirm',
+    ];
+    for (const err of errors) {
+      const field = String(err.path[0]);
+      if (allowedFields.includes(field)) {
+        fieldErrors[field] ??= [];
+        fieldErrors[field]?.push(err.message);
+      }
+    }
+    return fieldErrors;
+  }
+
   if (!validatedFields.success) {
-    const treeifiedErrors = z.treeifyError(validatedFields.error);
+    const fieldErrors = validatedFields.error?.errors
+      ? mapFieldErrors(validatedFields.error.errors)
+      : {};
 
     return {
       fieldErrors: {
-        email: treeifiedErrors.properties?.email?.errors,
-        firstname: treeifiedErrors.properties?.firstname?.errors,
-        lastname: treeifiedErrors.properties?.lastname?.errors,
-        pwd: treeifiedErrors.properties?.pwd?.errors,
-        pwdConfirm: treeifiedErrors.properties?.pwdConfirm?.errors,
+        email: fieldErrors.email,
+        firstname: fieldErrors.firstname,
+        lastname: fieldErrors.lastname,
+        pwd: fieldErrors.pwd,
+        pwdConfirm: fieldErrors.pwdConfirm,
       },
       preservedData,
     };

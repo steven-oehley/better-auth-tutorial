@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/sidebar';
 
 import SignOutBtn from './auth/sign-out-btn';
+import CustomerPortalBtn from './checkout/customer-portal-btn';
 
 // This is sample data.
 const data = {
@@ -169,6 +170,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
+        <CustomerPortalBtn />
         <SignOutBtn />
       </SidebarFooter>
       <SidebarRail />

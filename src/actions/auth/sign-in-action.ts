@@ -3,7 +3,6 @@
 import { redirect } from 'next/navigation';
 
 import { APIError } from 'better-auth/api';
-import z from 'zod';
 
 import { auth } from '@/lib/auth';
 import { signInSchema } from '@/schemas/sign-in-schema';
@@ -21,12 +20,12 @@ export const signInAction = async (
   const validatedFields = signInSchema.safeParse(rawData);
 
   if (!validatedFields.success) {
-    const treeifiedErrors = z.treeifyError(validatedFields.error);
+    const formatted = validatedFields.error.format();
 
     return {
       fieldErrors: {
-        email: treeifiedErrors.properties?.email?.errors,
-        pwd: treeifiedErrors.properties?.pwd?.errors,
+        email: formatted.email?._errors,
+        pwd: formatted.pwd?._errors,
       },
     };
   }
