@@ -1,3 +1,11 @@
+import {
+  checkout,
+  polar,
+  portal,
+  usage,
+  // webhooks,
+} from '@polar-sh/better-auth';
+import { Polar } from '@polar-sh/sdk';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { nextCookies } from 'better-auth/next-js';
@@ -9,7 +17,13 @@ import { PrismaClient } from '@/generated/prisma';
 
 const resend = new Resend(process.env.RESEND_API_KEY as string);
 
+const polarClient = new Polar({
+  accessToken: process.env.POLAR_ACCESS_TOKEN as string,
+  server: process.env.POLAR_SERVER as 'production' | 'sandbox' | undefined,
+});
+
 const prisma = new PrismaClient();
+
 export const auth = betterAuth({
   account: {
     accountLinking: {
@@ -56,7 +70,31 @@ export const auth = betterAuth({
     },
     verificationTokenExpiresIn: 60 * 60 * 48,
   },
-  plugins: [nextCookies()],
+  plugins: [
+    polar({
+      client: polarClient,
+      createCustomerOnSignUp: true,
+      use: [
+        checkout({
+          authenticatedUsersOnly: true,
+          products: [
+            {
+              productId: 'f6595351-e6a4-4794-825b-c80258dda040',
+              slug: 'Better-Build-Annual', // Custom slug for easy reference in Checkout URL, e.g. /checkout/Better-Build-Annual
+            },
+            {
+              productId: 'daadc154-aa06-4c9a-a847-f58b70c09ca9',
+              slug: 'Better-Build-Monthly', // Custom slug for easy reference in Checkout URL, e.g. /checkout/Better-Build-Monthly
+            },
+          ],
+          successUrl: '/success?checkout_id={CHECKOUT_ID}',
+        }),
+        portal(),
+        usage(),
+      ],
+    }),
+    nextCookies(),
+  ],
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
